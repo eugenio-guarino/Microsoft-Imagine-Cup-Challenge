@@ -1,3 +1,5 @@
-# Microsoft-Imagine-Cup-Challenge
+# ocr_flutter
 
-This repo contains Team Checkmate's work for Earth Challenge of the Microsoft Imagine Cup.
+OCR with flutter
+
+
