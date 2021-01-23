@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'src/reminders_list.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(FormApp());
+}
 
-class MyApp extends StatelessWidget {
+class FormApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _FormAppState();
+  }
+}
+
+class _FormAppState extends State<FormApp> {
+  int _currentIndex = 0;
+  List<String> titleList = ['Reminder', 'Add new', 'Settings'];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,12 +24,11 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Food Expiration Reminder'),
+          title: new Text(titleList[_currentIndex]),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) {
-            // Respond to item press.
-          },
+          type: BottomNavigationBarType.fixed,
+          onTap: onTabTapped,
           items: [
             BottomNavigationBarItem(
               title: Text('Reminders'),
@@ -33,96 +44,19 @@ class MyApp extends StatelessWidget {
             ),
           ],
         ),
-        body: RandomWords(),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: [
+            RemindersList(),
+          ],
+        ),
       ),
     );
   }
-}
 
-class RandomWords extends StatefulWidget {
-  @override
-  _RandomWordsState createState() => _RandomWordsState();
-}
-
-class _RandomWordsState extends State<RandomWords> {
-  final List<WordPair> _suggestions = <WordPair>[];
-  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
-  final Set<WordPair> _saved = Set<WordPair>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildSuggestions(),
-    );
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (BuildContext _context, int i) {
-          if (i.isOdd) {
-            return Divider();
-          }
-          final int index = i ~/ 2;
-
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final alreadySaved = _saved.contains(pair);
-
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: Icon(
-        Icons.delete,
-        color: alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final tiles = _saved.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList();
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Saved Suggestions'),
-            ),
-            body: ListView(children: divided),
-          );
-        },
-      ),
-    );
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
