@@ -48,8 +48,8 @@ class _AddNewState extends State<AddNew> {
                   TextFormField(
                     decoration: InputDecoration(
                       filled: true,
-                      hintText: 'Your email address',
-                      labelText: 'Email',
+                      hintText: 'Broccoli, Bacon, Pizza',
+                      labelText: 'Food name',
                     ),
                     onChanged: (value) {
                       formData.name = value;
@@ -58,7 +58,7 @@ class _AddNewState extends State<AddNew> {
                   TextFormField(
                     decoration: InputDecoration(
                       filled: true,
-                      labelText: 'Password',
+                      labelText: 'Expiration date',
                     ),
                     obscureText: true,
                     onChanged: (value) {
@@ -66,7 +66,7 @@ class _AddNewState extends State<AddNew> {
                     },
                   ),
                   FlatButton(
-                    child: Text('Sign in'),
+                    child: Text('Submit'),
                     onPressed: (){
 
                     },
