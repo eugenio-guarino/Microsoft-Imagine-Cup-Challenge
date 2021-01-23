@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'src/reminders_list.dart';
+import 'src/add_new.dart';
+import 'src/settings.dart';
 
 void main() {
   runApp(FormApp());
@@ -14,7 +16,7 @@ class FormApp extends StatefulWidget {
 
 class _FormAppState extends State<FormApp> {
   int _currentIndex = 0;
-  List<String> titleList = ['Reminder', 'Add new', 'Settings'];
+  List<String> titleList = ['Reminders List', 'Add new', 'Settings'];
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,8 @@ class _FormAppState extends State<FormApp> {
           index: _currentIndex,
           children: [
             RemindersList(),
+            AddNew(),
+            Settings(),    
           ],
         ),
       ),
