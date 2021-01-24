@@ -2,12 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:food_expiration_reminder/src/data_storage.dart';
 import 'food_data.dart';
+import 'package:flushbar/flushbar.dart';
 
 class AddNew extends StatefulWidget {
 
+  final DataStorage storage = DataStorage();
   AddNew();
 
   @override
@@ -15,7 +17,9 @@ class AddNew extends StatefulWidget {
 }
 
 class _AddNewState extends State<AddNew> {
-  ExpirationDateEntry formData = ExpirationDateEntry();
+  List<FoodData> _dataList = <FoodData>[];
+  String _name = "";
+  String _date = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class _AddNewState extends State<AddNew> {
                       labelText: 'Food name',
                     ),
                     onChanged: (value) {
-                      formData.name = value;
+                      _name = value;
                     },
                   ),
                   TextFormField(
@@ -42,24 +46,28 @@ class _AddNewState extends State<AddNew> {
                       filled: true,
                       labelText: 'Expiration date',
                     ),
-                    obscureText: true,
                     onChanged: (value) {
-                      formData.date = value;
+                      _date = value;
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text('Submit'),
-                    onPressed: () {},
+                    onPressed: () async{
+                        widget.storage.readData().then((List<FoodData> value) {
+                        setState(() {
+                          _dataList.clear();
+                          _dataList.addAll(value);
+                        });
+                      });
+
+                      _dataList.add(FoodData(_name,_date));
+
+                      widget.storage.writeData(_dataList);   
+                      _showDialog('Succesfully added.');   
+                    },
                   ),
-                ].expand(
-                  (widget) => [
-                    widget,
-                    SizedBox(
-                      height: 24,
-                    )
-                  ],
-                )
-              ],
+                ]
+              ]
             ),
           ),
         ),
@@ -68,17 +76,9 @@ class _AddNewState extends State<AddNew> {
   }
 
   void _showDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(message),
-        actions: [
-          FlatButton(
-            child: Text('OK'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
-    );
+    Flushbar(
+      message: message,
+      duration:  Duration(seconds: 3)
+    )..show(context);
   }
 }

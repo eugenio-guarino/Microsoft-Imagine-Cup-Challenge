@@ -13,7 +13,7 @@ class DataStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/data.json');
+    return File('$path/data.txt');
   }
 
   Future<List<FoodData>> readData() async {
@@ -23,12 +23,13 @@ class DataStorage {
       // Read the file
       String contents = await file.readAsString();
 
-      var dataObjsJson = jsonDecode(contents)['fooddata'] as List;
+      var dataObjsJson = jsonDecode(contents) as List;
       List<FoodData> expirationList = dataObjsJson.map((dataJson) => FoodData.fromJson(dataJson)).toList();
 
       return expirationList;
+      
     } catch (e) {
-      List<FoodData> emptyList;
+      List<FoodData> emptyList = [];
       return emptyList;
     }
   }
