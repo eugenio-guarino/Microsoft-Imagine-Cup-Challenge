@@ -47,6 +47,7 @@ class _AddNewState extends State<AddNew> {
                     labelText: 'Expiration date',
                   ),
                   controller: _textEditingController,
+                  focusNode: AlwaysDisabledFocusNode(),
                   onTap: _selectDate,
                 ),
                 TextButton(
@@ -93,4 +94,9 @@ class _AddNewState extends State<AddNew> {
   void _showDialog(String message) {
     Flushbar(message: message, duration: Duration(seconds: 1))..show(context);
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
