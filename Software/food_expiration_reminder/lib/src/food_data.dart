@@ -1,6 +1,6 @@
 class FoodData {
   String name;
-  String date;
+  DateTime date;
 
   FoodData(
     this.name,
@@ -8,11 +8,11 @@ class FoodData {
   );
 
   factory FoodData.fromJson(dynamic json) {
-    return FoodData(json['name'] as String, json['date'] as String);
+    return FoodData(json['name'] as String, DateTime.parse(json['date'] as String));
   }
 
   Map toJson() => {
     'name': name,
-    'date': date,
+    'date': date.toString(),
   };
 }
