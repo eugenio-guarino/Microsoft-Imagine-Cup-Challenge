@@ -18,9 +18,10 @@ class AddNew extends StatefulWidget {
 
 class _AddNewState extends State<AddNew> {
   String _name = "";
-
   DateTime _date = new DateTime.now();
-  TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _datePickerController = TextEditingController();
+  TextEditingController _foodNameController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,9 @@ class _AddNewState extends State<AddNew> {
                     filled: true,
                     hintText: 'Broccoli, Bacon, Pizza',
                     labelText: 'Food name',
+                    
                   ),
+                  controller: _foodNameController,
                   onChanged: (value) {
                     _name = value;
                   },
@@ -46,7 +49,7 @@ class _AddNewState extends State<AddNew> {
                     filled: true,
                     labelText: 'Expiration date',
                   ),
-                  controller: _textEditingController,
+                  controller: _datePickerController,
                   focusNode: AlwaysDisabledFocusNode(),
                   onTap: _selectDate,
                 ),
@@ -59,6 +62,8 @@ class _AddNewState extends State<AddNew> {
                       widget.storage.writeData(_tempList);
                     });
 
+                    _foodNameController.clear();
+                    _datePickerController.clear();
                     _showDialog('Succesfully added.');
                   },
                 ),
@@ -83,10 +88,10 @@ class _AddNewState extends State<AddNew> {
 
     if (newDate != null) {
       _date = newDate;
-      _textEditingController
+      _datePickerController
         ..text = DateFormat.yMMMd().format(_date)
         ..selection = TextSelection.fromPosition(TextPosition(
-            offset: _textEditingController.text.length,
+            offset: _datePickerController.text.length,
             affinity: TextAffinity.upstream));
     }
   }
