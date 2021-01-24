@@ -50,7 +50,7 @@ class _FooDataEntriesState extends State<FooDataEntries> {
   Widget _buildRow(FoodData food) {
     return ListTile(
       title: Text(
-        "${food.name} ${DateFormat.yMMMd().format(food.date)}",
+        "${food.name} by ${DateFormat.yMMMd().format(food.date)}",
         style: _biggerFont,
       ),
       trailing: Icon(

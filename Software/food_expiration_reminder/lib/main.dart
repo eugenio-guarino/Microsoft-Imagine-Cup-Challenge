@@ -18,7 +18,7 @@ class FormApp extends StatefulWidget {
 class _FormAppState extends State<FormApp> {
   final directory = getApplicationDocumentsDirectory();
   int _currentIndex = 0;
-  List<String> titleList = ['Reminders List', 'Add new', 'Settings'];
+  List<String> titleList = ['BEST BEFORE dates', 'Add food', 'Settings'];
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,11 @@ class _FormAppState extends State<FormApp> {
           onTap: onTabTapped,
           items: [
             BottomNavigationBarItem(
-              label: 'Reminders',
+              label: 'Food reminders',
               icon: Icon(Icons.format_list_bulleted),
             ),
             BottomNavigationBarItem(
-              label: 'Add reminder',
+              label: 'Add food',
               icon: Icon(Icons.add),
             ),
             BottomNavigationBarItem(

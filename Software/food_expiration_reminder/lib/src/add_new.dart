@@ -35,7 +35,7 @@ class _AddNewState extends State<AddNew> {
                 TextFormField(
                   decoration: InputDecoration(
                     filled: true,
-                    hintText: 'Broccoli, Bacon, Pizza',
+                    hintText: "What's in your fridge?",
                     labelText: 'Food name',
                     
                   ),
