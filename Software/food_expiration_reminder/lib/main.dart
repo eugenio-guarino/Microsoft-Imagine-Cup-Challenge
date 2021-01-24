@@ -24,7 +24,7 @@ class _FormAppState extends State<FormApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.green,
+        primaryColor: Colors.amber,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -33,7 +33,7 @@ class _FormAppState extends State<FormApp> {
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: onTabTapped,
-          items: [
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               label: 'Food reminders',
               icon: Icon(Icons.format_list_bulleted),
@@ -47,6 +47,8 @@ class _FormAppState extends State<FormApp> {
               icon: Icon(Icons.settings),
             ),
           ],
+          selectedItemColor: Colors.amber[800],
+          currentIndex: _currentIndex,
         ),
         body: IndexedStack(
           index: _currentIndex,
