@@ -18,13 +18,13 @@ class FormApp extends StatefulWidget {
 class _FormAppState extends State<FormApp> {
   final directory = getApplicationDocumentsDirectory();
   int _currentIndex = 0;
-  List<String> titleList = ['Reminders List', 'Add new', 'Settings'];
+  List<String> titleList = ['BEST BEFORE dates', 'Add food', 'Settings'];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.green,
+        primaryColor: Colors.amber,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -33,13 +33,13 @@ class _FormAppState extends State<FormApp> {
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: onTabTapped,
-          items: [
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              label: 'Reminders',
+              label: 'Food reminders',
               icon: Icon(Icons.format_list_bulleted),
             ),
             BottomNavigationBarItem(
-              label: 'Add reminder',
+              label: 'Add food',
               icon: Icon(Icons.add),
             ),
             BottomNavigationBarItem(
@@ -47,6 +47,8 @@ class _FormAppState extends State<FormApp> {
               icon: Icon(Icons.settings),
             ),
           ],
+          selectedItemColor: Colors.amber[800],
+          currentIndex: _currentIndex,
         ),
         body: IndexedStack(
           index: _currentIndex,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'data_storage.dart';
 import 'food_data.dart';
 
@@ -49,7 +50,7 @@ class _FooDataEntriesState extends State<FooDataEntries> {
   Widget _buildRow(FoodData food) {
     return ListTile(
       title: Text(
-        food.name + " " + food.date,
+        "${food.name} by ${DateFormat.yMMMd().format(food.date)}",
         style: _biggerFont,
       ),
       trailing: Icon(
