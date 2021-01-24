@@ -4,25 +4,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-part 'add_new.g.dart';
-
-@JsonSerializable()
-class FormData {
-  String name;
-  String date;
-
-  FormData({
-    this.name,
-    this.date,
-  });
-
-  factory FormData.fromJson(Map<String, dynamic> json) =>
-      _$FormDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FormDataToJson(this);
-}
+import 'food_data.dart';
 
 class AddNew extends StatefulWidget {
 
@@ -33,7 +15,7 @@ class AddNew extends StatefulWidget {
 }
 
 class _AddNewState extends State<AddNew> {
-  FormData formData = FormData();
+  ExpirationDateEntry formData = ExpirationDateEntry();
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +49,7 @@ class _AddNewState extends State<AddNew> {
                   ),
                   FlatButton(
                     child: Text('Submit'),
-                    onPressed: (){
-
-                    },
+                    onPressed: () {},
                   ),
                 ].expand(
                   (widget) => [

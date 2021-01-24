@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'src/reminders_list.dart';
 import 'src/add_new.dart';
 import 'src/settings.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main () {
   runApp(FormApp());
 }
 
@@ -15,6 +16,7 @@ class FormApp extends StatefulWidget {
 }
 
 class _FormAppState extends State<FormApp> {
+  final directory = getApplicationDocumentsDirectory();
   int _currentIndex = 0;
   List<String> titleList = ['Reminders List', 'Add new', 'Settings'];
 
@@ -63,4 +65,5 @@ class _FormAppState extends State<FormApp> {
       _currentIndex = index;
     });
   }
+
 }
