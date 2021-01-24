@@ -38,7 +38,6 @@ class DataStorage {
     final file = await _localFile;
 
     String jsonData = jsonEncode(data);
-
     // Write the file
     return file.writeAsString(jsonData);
   }

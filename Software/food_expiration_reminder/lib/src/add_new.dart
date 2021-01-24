@@ -17,9 +17,9 @@ class AddNew extends StatefulWidget {
 }
 
 class _AddNewState extends State<AddNew> {
-  List<FoodData> _dataList = <FoodData>[];
   String _name = "";
   String _date = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +54,10 @@ class _AddNewState extends State<AddNew> {
                     child: Text('Submit'),
                     onPressed: () async{
                         widget.storage.readData().then((List<FoodData> value) {
-                        setState(() {
-                          _dataList.clear();
-                          _dataList.addAll(value);
-                        });
+                          List<FoodData> _tempList = [FoodData(_name,_date)] + value;
+                          widget.storage.writeData(_tempList);
                       });
 
-                      _dataList.add(FoodData(_name,_date));
-
-                      widget.storage.writeData(_dataList);   
                       _showDialog('Succesfully added.');   
                     },
                   ),
@@ -78,7 +73,7 @@ class _AddNewState extends State<AddNew> {
   void _showDialog(String message) {
     Flushbar(
       message: message,
-      duration:  Duration(seconds: 3)
+      duration:  Duration(seconds: 1)
     )..show(context);
   }
 }
