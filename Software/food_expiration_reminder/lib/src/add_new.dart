@@ -8,6 +8,13 @@ import 'food_data.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'apikey.dart';
+
+
 class AddNew extends StatefulWidget {
   final DataStorage storage = DataStorage();
   AddNew();
@@ -21,7 +28,41 @@ class _AddNewState extends State<AddNew> {
   DateTime _date = new DateTime.now();
   TextEditingController _datePickerController = TextEditingController();
   TextEditingController _foodNameController = TextEditingController();
-  
+
+  String _parsedText = "";
+
+  parseText() async {
+    final _imageFile = await ImagePicker().getImage(source:ImageSource.gallery, maxWidth: 670,   maxHeight: 970);
+
+    var bytes = Io.File(_imageFile.path.toString()).readAsBytesSync();
+    String img64 = base64Encode(bytes);
+
+    var url = 'https://api.ocr.space/parse/image';
+    var payload = {"base64Image": "data:image/jpg;base64,${img64.toString()}"};
+    var header = {"apikey": api_key};
+    var post = await http.post(url=url,body: payload,headers: header);
+
+    var result = jsonDecode(post.body);
+    setState(() {
+      _parsedText = result['ParsedResults'][0]['ParsedText'];
+    });
+    textToDate();
+  }
+
+  textToDate() {
+    var splitText = _parsedText.split("/");
+    String combinedDate = splitText[0].substring(splitText[0].length-2) + "/" + splitText[1].substring(splitText[1].length-2) + "/" + splitText[2].substring(0, 2);
+    print(splitText[0] + "  " + splitText[1] + "  " + splitText[2]);
+    print(combinedDate);
+    _date = DateFormat('dd/MM/yy').parse(combinedDate);
+    _datePickerController
+      ..text = DateFormat('dd/MM/yy').format(_date)
+      ..selection = TextSelection.fromPosition(TextPosition(
+          offset: _datePickerController.text.length,
+          affinity: TextAffinity.upstream));
+
+    print(_date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +90,17 @@ class _AddNewState extends State<AddNew> {
                     filled: true,
                     labelText: 'Expiration date',
                   ),
-                  controller: _datePickerController,
+                  controller: (_datePickerController),
                   focusNode: AlwaysDisabledFocusNode(),
                   onTap: _selectDate,
+                ),
+                RaisedButton(
+                  onPressed: () => parseText(),
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.amber,
+                    size: 40,
+                  ),
                 ),
                 TextButton(
                   child: Text('Submit'),
@@ -64,7 +113,7 @@ class _AddNewState extends State<AddNew> {
 
                     _foodNameController.clear();
                     _datePickerController.clear();
-                    _showDialog('Succesfully added.');
+                    _showDialog('Successfully added.');
                   },
                 ),
               ]
@@ -86,7 +135,7 @@ class _AddNewState extends State<AddNew> {
       helpText: 'Select a date',
     );
 
-    if (newDate != null) {
+    if (newDate != null && _date == DateTime.now()) {
       _date = newDate;
       _datePickerController
         ..text = DateFormat.yMMMd().format(_date)
