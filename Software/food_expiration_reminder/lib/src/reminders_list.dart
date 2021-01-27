@@ -53,11 +53,16 @@ class _FooDataEntriesState extends State<FooDataEntries> {
         "${food.name} by ${DateFormat.yMMMd().format(food.date)}",
         style: _biggerFont,
       ),
-      trailing: Icon(
-        Icons.delete,
+      trailing: IconButton(
+        icon: new Icon(Icons.delete),
         color: Colors.red,
+        onPressed: () => deleteFoodExpirationReminder(food.id),
       ),
-      onTap: () {},
     );
+  }
+
+  deleteFoodExpirationReminder(int id) {
+    _dataList.removeAt(id);
+    widget.storage.writeData(_dataList);
   }
 }
