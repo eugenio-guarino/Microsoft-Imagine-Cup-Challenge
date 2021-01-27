@@ -21,7 +21,6 @@ class _FooDataEntriesState extends State<FooDataEntries> {
   final List<FoodData> _dataList = new List<FoodData>();
   final TextStyle _biggerFont = const TextStyle(fontSize: 18);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,16 +56,13 @@ class _FooDataEntriesState extends State<FooDataEntries> {
       trailing: IconButton(
         icon: new Icon(Icons.delete),
         color: Colors.red,
-        onPressed: () => _deleteEntry(food.id),
-
-      ),  
+        onPressed: () => deleteFoodExpirationReminder(food.id),
+      ),
     );
   }
 
-  _deleteEntry(int id){
-      _dataList.removeAt(id);
-      widget.storage.writeData(_dataList);
+  deleteFoodExpirationReminder(int id) {
+    _dataList.removeAt(id);
+    widget.storage.writeData(_dataList);
   }
 }
-
-
