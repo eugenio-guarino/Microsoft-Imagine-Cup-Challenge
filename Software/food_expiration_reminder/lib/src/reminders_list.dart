@@ -21,6 +21,7 @@ class _FooDataEntriesState extends State<FooDataEntries> {
   final List<FoodData> _dataList = new List<FoodData>();
   final TextStyle _biggerFont = const TextStyle(fontSize: 18);
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +54,19 @@ class _FooDataEntriesState extends State<FooDataEntries> {
         "${food.name} by ${DateFormat.yMMMd().format(food.date)}",
         style: _biggerFont,
       ),
-      trailing: Icon(
-        Icons.delete,
+      trailing: IconButton(
+        icon: new Icon(Icons.delete),
         color: Colors.red,
-      ),
-      onTap: () {},
+        onPressed: () => _deleteEntry(food.id),
+
+      ),  
     );
   }
+
+  _deleteEntry(int id){
+      _dataList.removeAt(id);
+      widget.storage.writeData(_dataList);
+  }
 }
+
+

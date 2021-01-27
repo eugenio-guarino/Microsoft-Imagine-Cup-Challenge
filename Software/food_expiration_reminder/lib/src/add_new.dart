@@ -57,8 +57,7 @@ class _AddNewState extends State<AddNew> {
                   child: Text('Submit'),
                   onPressed: () async {
                     widget.storage.readData().then((List<FoodData> value) {
-                      List<FoodData> _tempList =
-                          [FoodData(_name, _date)] + value;
+                      List<FoodData> _tempList = [FoodData(_name, _date, value.isEmpty ? 0 : value.length - 1)] + value;
                       widget.storage.writeData(_tempList);
                     });
 

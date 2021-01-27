@@ -13,7 +13,7 @@ class DataStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/data.json');
+    return File('$path/data3.json');
   }
 
   Future<List<FoodData>> readData() async {
