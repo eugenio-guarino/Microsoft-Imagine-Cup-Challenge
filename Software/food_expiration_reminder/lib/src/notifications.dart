@@ -56,7 +56,7 @@ class Notifications {
     tz.setLocalLocation(tz.getLocation(await _getTimeZone()));
   }
 
-  Future<void> scheduleNotification() async {
+  static Future<void> scheduleNotification() async {
     var scheduledNotificationDateTime =
         DateTime.now().add(Duration(seconds: 5));
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(

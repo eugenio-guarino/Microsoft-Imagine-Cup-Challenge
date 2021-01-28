@@ -7,6 +7,7 @@ import 'package:food_expiration_reminder/src/data_storage.dart';
 import 'food_data.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
+import 'notifications.dart';
 
 
 class AddNew extends StatefulWidget {
@@ -63,10 +64,8 @@ class _AddNewState extends State<AddNew> {
                           ] +
                           value;
                       widget.storage.writeData(_tempList);
+                      Notifications.scheduleNotification();
                     });
-
-
-
                     _foodNameController.clear();
                     _datePickerController.clear();
                     _showDialog('Succesfully added.');
