@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'notifications.dart';
 import 'data_storage.dart';
 
 class Settings extends StatelessWidget {
@@ -44,6 +44,7 @@ class Settings extends StatelessWidget {
               child: Text('Yes'),
               onPressed: () {
                 deleteAllFoodEntries();
+                Notifications.deleteAllNotifications();
                 Navigator.of(context).pop();
               },
             ),

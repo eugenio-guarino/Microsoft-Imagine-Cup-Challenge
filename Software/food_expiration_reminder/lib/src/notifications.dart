@@ -52,8 +52,15 @@ class Notifications {
 
   static Future<void> _setTimeZone() async {
     tz.initializeTimeZones();
-
     tz.setLocalLocation(tz.getLocation(await _getTimeZone()));
+  }
+
+  static Future<void> deleteNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+    static Future<void> deleteAllNotifications() async {
+     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   static Future<void> scheduleNotification(String name, DateTime expirationDate) async {
@@ -71,9 +78,9 @@ class Notifications {
         0,
         "No Waste!",
         "Your $name is going off. Eat it before it is too late!",
-        //DateTime.now().add(Duration(seconds: 5))
+        DateTime.now().add(Duration(seconds: 5)),
         //sets the notification one day before the expiration date
-        expirationDate.subtract(Duration(days: 1)),
+        // expirationDate.subtract(Duration(days: 1)),
         platformChannelSpecifics);
   }
 }
