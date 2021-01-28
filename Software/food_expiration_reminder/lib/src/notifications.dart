@@ -1,0 +1,79 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+final BehaviorSubject<String> selectNotificationSubject =
+    BehaviorSubject<String>();
+
+class Notifications {
+  Notifications();
+
+  static Future<void> initialisePlugin() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            initializationSettingsAndroid, initializationSettingsIOS);
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: $payload');
+      }
+      selectNotificationSubject.add(payload);
+    });
+
+    _setTimeZone();
+  }
+
+  static Future<void> askIOSpermissions() async {
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  static Future<String> _getTimeZone() async {
+    return await FlutterNativeTimezone.getLocalTimezone();
+  }
+
+  static Future<void> _setTimeZone() async {
+    tz.initializeTimeZones();
+
+    tz.setLocalLocation(tz.getLocation(await _getTimeZone()));
+  }
+
+  static Future<void> scheduleNotification(String name, DateTime expirationDate) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'channel id',
+      'channel name',
+      'channel description',
+      icon: 'app_icon',
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        "No Waste!",
+        "Your $name is going off. Eat it before it is too late!",
+        //DateTime.now().add(Duration(seconds: 5))
+        //sets the notification one day before the expiration date
+        expirationDate.subtract(Duration(days: 1)),
+        platformChannelSpecifics);
+  }
+}
