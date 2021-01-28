@@ -63,7 +63,7 @@ class _FooDataEntriesState extends State<FooDataEntries> {
   }
 
   deleteFoodExpirationReminder(int id) {
-    _dataList.removeAt(id);
+     _dataList.removeWhere((food) => food.id == id);
     widget.storage.writeData(_dataList);
     Notifications.deleteNotification(id);
 
