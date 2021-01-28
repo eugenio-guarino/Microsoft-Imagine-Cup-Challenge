@@ -64,7 +64,7 @@ class _AddNewState extends State<AddNew> {
                           ] +
                           value;
                       widget.storage.writeData(_tempList);
-                      Notifications.scheduleNotification();
+                      Notifications.scheduleNotification(_name, _date);
                     });
                     _foodNameController.clear();
                     _datePickerController.clear();

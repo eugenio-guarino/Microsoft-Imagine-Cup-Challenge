@@ -56,9 +56,7 @@ class Notifications {
     tz.setLocalLocation(tz.getLocation(await _getTimeZone()));
   }
 
-  static Future<void> scheduleNotification() async {
-    var scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: 5));
+  static Future<void> scheduleNotification(String name, DateTime expirationDate) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel id',
       'channel name',
@@ -71,9 +69,11 @@ class Notifications {
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
         0,
-        'scheduled title',
-        'scheduled body',
-        scheduledNotificationDateTime,
+        "No Waste!",
+        "Your $name is going off. Eat it before it is too late!",
+        //DateTime.now().add(Duration(seconds: 5))
+        //sets the notification one day before the expiration date
+        expirationDate.subtract(Duration(days: 1)),
         platformChannelSpecifics);
   }
 }
