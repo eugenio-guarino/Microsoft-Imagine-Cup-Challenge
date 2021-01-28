@@ -19,10 +19,6 @@ class Settings extends StatelessWidget {
     );
   }
 
-  void deleteAllFoodEntries() {
-    storage.deleteFile();
-  }
-
   Future<void> _showMyDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
