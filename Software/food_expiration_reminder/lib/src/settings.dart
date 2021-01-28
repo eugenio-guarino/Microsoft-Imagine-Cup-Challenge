@@ -12,8 +12,7 @@ class Settings extends StatelessWidget {
       body: Center(
         child: TextButton(
           child:
-              Text('Delete all food reminders', 
-              style: TextStyle(fontSize: 20)),
+              Text('Delete all food reminders', style: TextStyle(fontSize: 20)),
           onPressed: () => _showMyDialog(context),
         ),
       ),
@@ -43,8 +42,7 @@ class Settings extends StatelessWidget {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                deleteAllFoodEntries();
-                Notifications.deleteAllNotifications();
+                deleteAllFoodExpirationReminders();
                 Navigator.of(context).pop();
               },
             ),
@@ -58,5 +56,10 @@ class Settings extends StatelessWidget {
         );
       },
     );
+  }
+
+  deleteAllFoodExpirationReminders() async {
+    storage.deleteFile();
+    await Notifications.deleteAllNotifications();
   }
 }
