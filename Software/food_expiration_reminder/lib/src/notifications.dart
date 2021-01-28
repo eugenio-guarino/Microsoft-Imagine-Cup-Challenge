@@ -70,6 +70,8 @@ class Notifications {
       'channel id',
       'channel name',
       'channel description',
+      importance: Importance.Max,
+      priority: Priority.Max,
       icon: 'app_icon',
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
@@ -80,7 +82,7 @@ class Notifications {
         foodData.id,
         "No Waste!",
         "Your ${foodData.name} is going off tomorrow. Eat it before it is too late!",
-        DateTime.now().add(Duration(seconds: 500)),
+        DateTime.now().add(Duration(seconds: 5)),
         //sets the notification one day before the expiration date
         // foodData.date.subtract(Duration(days: 1)),
         platformChannelSpecifics);
