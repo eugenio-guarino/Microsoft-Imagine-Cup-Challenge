@@ -34,6 +34,15 @@ class _FooDataEntriesState extends State<FooDataEntries> {
       setState(() {
         _dataList.clear();
         _dataList.addAll(value);
+
+        DateTime now = new DateTime.now();
+
+        for (var i = 0; i < _dataList.length; i++) {
+          if (now.isAfter(_dataList[i].date.subtract(Duration(days: 1)))) {
+            _dataList.removeAt(i);
+            widget.storage.writeData(_dataList);
+          }
+        }
       });
     });
     return ListView.separated(
