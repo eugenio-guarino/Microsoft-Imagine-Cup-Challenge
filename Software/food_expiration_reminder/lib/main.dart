@@ -24,7 +24,7 @@ class _FormAppState extends State<FormApp> {
   final directory = getApplicationDocumentsDirectory();
   final result = Notifications.askIOSpermissions();
   int _currentIndex = 0;
-  List<String> titleList = ['Active reminders', 'Create an Expiration Date Reminder', 'Settings'];
+  List<String> titleList = ['Active Reminders', 'New Expiration Date Reminder', 'Settings'];
 
 
   @override

@@ -82,9 +82,9 @@ class Notifications {
         foodData.id,
         "No Waste!",
         "Your ${foodData.name} is going off tomorrow. Eat it before it is too late!",
-        DateTime.now().add(Duration(seconds: 5)),
+        //DateTime.now().add(Duration(seconds: 5)),
         //sets the notification one day before the expiration date
-        // foodData.date.subtract(Duration(days: 1)),
+        foodData.date.subtract(Duration(days: 1)),
         platformChannelSpecifics);
   }
 }
