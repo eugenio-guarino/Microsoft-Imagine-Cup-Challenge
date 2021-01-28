@@ -5,6 +5,8 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
+import 'food_data.dart';
+
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -52,11 +54,18 @@ class Notifications {
 
   static Future<void> _setTimeZone() async {
     tz.initializeTimeZones();
-
     tz.setLocalLocation(tz.getLocation(await _getTimeZone()));
   }
 
-  static Future<void> scheduleNotification(String name, DateTime expirationDate) async {
+  static Future<void> deleteNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+    static Future<void> deleteAllNotifications() async {
+     await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  static Future<void> scheduleNotification(FoodData foodData) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel id',
       'channel name',
@@ -68,12 +77,12 @@ class Notifications {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
-        0,
+        foodData.id,
         "No Waste!",
-        "Your $name is going off. Eat it before it is too late!",
-        //DateTime.now().add(Duration(seconds: 5))
+        "Your ${foodData.name} is going off tomorrow. Eat it before it is too late!",
+        DateTime.now().add(Duration(seconds: 500)),
         //sets the notification one day before the expiration date
-        expirationDate.subtract(Duration(days: 1)),
+        // foodData.date.subtract(Duration(days: 1)),
         platformChannelSpecifics);
   }
 }

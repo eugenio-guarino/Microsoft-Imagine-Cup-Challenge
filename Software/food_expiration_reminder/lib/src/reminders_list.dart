@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'data_storage.dart';
 import 'food_data.dart';
+import 'notifications.dart';
 
 class RemindersList extends StatelessWidget {
   @override
@@ -61,8 +62,9 @@ class _FooDataEntriesState extends State<FooDataEntries> {
     );
   }
 
-  deleteFoodExpirationReminder(int id) {
-    _dataList.removeAt(id);
+  deleteFoodExpirationReminder(int id) async {
+    _dataList.removeWhere((food) => food.id == id);
     widget.storage.writeData(_dataList);
+    await Notifications.deleteNotification(id);
   }
 }

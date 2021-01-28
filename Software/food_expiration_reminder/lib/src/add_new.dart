@@ -58,13 +58,15 @@ class _AddNewState extends State<AddNew> {
                   child: Text('Submit'),
                   onPressed: () async {
                     widget.storage.readData().then((List<FoodData> value) {
-                      List<FoodData> _tempList = [
-                            FoodData(_name, _date,
-                                value.isEmpty ? 0 : value.length - 1)
-                          ] +
-                          value;
-                      widget.storage.writeData(_tempList);
-                      Notifications.scheduleNotification(_name, _date);
+                      int newID = 0;
+                      
+                      if (value != null && value.isNotEmpty) {
+                      newID = value.fold<int>(0, (max, food) => food.id > max ? food.id : max) + 1;
+                      }
+                      FoodData newFoodData = new FoodData(_name, _date, newID);
+                      List<FoodData> newList = [newFoodData] + value;
+                      widget.storage.writeData(newList);
+                      Notifications.scheduleNotification(newFoodData);
                     });
                     _foodNameController.clear();
                     _datePickerController.clear();

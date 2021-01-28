@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'notifications.dart';
 import 'data_storage.dart';
 
 class Settings extends StatelessWidget {
@@ -12,16 +12,11 @@ class Settings extends StatelessWidget {
       body: Center(
         child: TextButton(
           child:
-              Text('Delete all food reminders', 
-              style: TextStyle(fontSize: 20)),
+              Text('Delete all food reminders', style: TextStyle(fontSize: 20)),
           onPressed: () => _showMyDialog(context),
         ),
       ),
     );
-  }
-
-  void deleteAllFoodEntries() {
-    storage.deleteFile();
   }
 
   Future<void> _showMyDialog(BuildContext context) async {
@@ -43,7 +38,7 @@ class Settings extends StatelessWidget {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                deleteAllFoodEntries();
+                deleteAllFoodExpirationReminders();
                 Navigator.of(context).pop();
               },
             ),
@@ -57,5 +52,10 @@ class Settings extends StatelessWidget {
         );
       },
     );
+  }
+
+  deleteAllFoodExpirationReminders() async {
+    storage.deleteFile();
+    await Notifications.deleteAllNotifications();
   }
 }
