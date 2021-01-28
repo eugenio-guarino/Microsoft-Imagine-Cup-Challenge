@@ -24,14 +24,14 @@ class _FormAppState extends State<FormApp> {
   final directory = getApplicationDocumentsDirectory();
   final result = Notifications.askIOSpermissions();
   int _currentIndex = 0;
-  List<String> titleList = ['BEST BEFORE dates', 'Add food', 'Settings'];
+  List<String> titleList = ['Active reminders', 'Create an Expiration Date Reminder', 'Settings'];
 
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.amber,
+        primaryColor: Colors.green,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -54,7 +54,7 @@ class _FormAppState extends State<FormApp> {
               icon: Icon(Icons.settings),
             ),
           ],
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.greenAccent,
           currentIndex: _currentIndex,
         ),
         body: IndexedStack(
