@@ -14,6 +14,7 @@ final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   
   const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('app_icon');
@@ -24,13 +25,14 @@ Future<void> main() async {
       initializationSettingsAndroid,
       initializationSettingsIOS);
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String payload) async {
     if (payload != null) {
       debugPrint('notification payload: $payload');
     }
     selectNotificationSubject.add(payload);
   });
+
 
   runApp(FormApp());
 }

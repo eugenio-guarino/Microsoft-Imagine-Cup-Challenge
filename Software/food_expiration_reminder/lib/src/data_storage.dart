@@ -41,7 +41,7 @@ class DataStorage {
     return file.writeAsString(jsonData);
   }
 
-  Future<int> deleteFile() async {
+  deleteFile() async {
       try {
         final file = await _localFile;
 
