@@ -30,6 +30,7 @@ class _FormAppState extends State<FormApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.green,
       ),

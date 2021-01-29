@@ -99,7 +99,7 @@ class _AddNewState extends State<AddNew> {
                   ),
                   IconButton(
                     icon: Icon(Icons.photo_camera),
-                    onPressed: () => _parseText,
+                    onPressed: () => _parseText(),
                   ),
                 ]),
                 TextButton(
@@ -181,6 +181,7 @@ class _AddNewState extends State<AddNew> {
     var post = await http.post(url=url,body: payload,headers: header);
 
     var result = jsonDecode(post.body);
+    print(result);
     setState(() {
       _parsedText = result['ParsedResults'][0]['ParsedText'];
     });
