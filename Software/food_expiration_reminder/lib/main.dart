@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'src/notifications.dart';
 import 'src/reminders_list.dart';
 import 'src/add_new.dart';
 import 'src/settings.dart';
 import 'package:path_provider/path_provider.dart';
 
-void main () {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Notifications.initialisePlugin();
+
   runApp(FormApp());
 }
 
@@ -17,14 +22,16 @@ class FormApp extends StatefulWidget {
 
 class _FormAppState extends State<FormApp> {
   final directory = getApplicationDocumentsDirectory();
+  final result = Notifications.askIOSpermissions();
   int _currentIndex = 0;
-  List<String> titleList = ['BEST BEFORE dates', 'Add food', 'Settings'];
+  List<String> titleList = ['Active Reminders', 'New Expiration Date Reminder', 'Settings'];
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.amber,
+        primaryColor: Colors.green,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -47,7 +54,7 @@ class _FormAppState extends State<FormApp> {
               icon: Icon(Icons.settings),
             ),
           ],
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.greenAccent,
           currentIndex: _currentIndex,
         ),
         body: IndexedStack(

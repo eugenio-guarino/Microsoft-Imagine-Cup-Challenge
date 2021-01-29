@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'data_storage.dart';
 import 'food_data.dart';
+import 'notifications.dart';
 
 class RemindersList extends StatelessWidget {
   @override
@@ -33,6 +34,15 @@ class _FooDataEntriesState extends State<FooDataEntries> {
       setState(() {
         _dataList.clear();
         _dataList.addAll(value);
+
+        DateTime now = new DateTime.now();
+
+        for (var i = 0; i < _dataList.length; i++) {
+          if (now.isAfter(_dataList[i].date.subtract(Duration(days: 1)))) {
+            _dataList.removeAt(i);
+            widget.storage.writeData(_dataList);
+          }
+        }
       });
     });
     return ListView.separated(
@@ -53,11 +63,17 @@ class _FooDataEntriesState extends State<FooDataEntries> {
         "${food.name} by ${DateFormat.yMMMd().format(food.date)}",
         style: _biggerFont,
       ),
-      trailing: Icon(
-        Icons.delete,
+      trailing: IconButton(
+        icon: new Icon(Icons.delete),
         color: Colors.red,
+        onPressed: () => deleteFoodExpirationReminder(food.id),
       ),
-      onTap: () {},
     );
+  }
+
+  deleteFoodExpirationReminder(int id) async {
+    _dataList.removeWhere((food) => food.id == id);
+    widget.storage.writeData(_dataList);
+    await Notifications.deleteNotification(id);
   }
 }

@@ -37,6 +37,12 @@ dependencies:
   http:
   image:
   image_picker:
+  flutter_local_notifications: ^1.4.4+1
+  rxdart: ^0.25.0
+  flutter_native_timezone: ^1.0.4
+  timezone: ^0.6.1
+
+
 
 dev_dependencies:
   flutter_test:

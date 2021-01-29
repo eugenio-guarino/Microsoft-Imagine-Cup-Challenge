@@ -20,14 +20,13 @@ class DataStorage {
     try {
       final file = await _localFile;
 
-      // Read the file
       String contents = await file.readAsString();
 
       var dataObjsJson = jsonDecode(contents) as List;
-      List<FoodData> expirationList = dataObjsJson.map((dataJson) => FoodData.fromJson(dataJson)).toList();
+      List<FoodData> expirationList =
+          dataObjsJson.map((dataJson) => FoodData.fromJson(dataJson)).toList();
 
       return expirationList;
-      
     } catch (e) {
       List<FoodData> emptyList = [];
       return emptyList;
@@ -41,4 +40,14 @@ class DataStorage {
     // Write the file
     return file.writeAsString(jsonData);
   }
+
+  deleteFile() async {
+      try {
+        final file = await _localFile;
+
+        await file.delete();
+      } catch (e) {
+        return 0;
+      }
+    }
 }
