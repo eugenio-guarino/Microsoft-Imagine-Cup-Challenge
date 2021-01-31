@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_expiration_reminder/src/data_storage.dart';
-import 'OCRServicce.dart';
+import 'ComputerVisionAPI.dart';
 import 'food_data.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
@@ -165,7 +165,7 @@ class _AddNewState extends State<AddNew> {
 
   void _useOCR() async{
 
-    DateTime date = await OCRService.imageToDate();
+    DateTime date = await ComputerVisionAPI.imageToDate();
 
     _datePickerController
       ..text = DateFormat('dd/MM/yy').format(date)

@@ -4,8 +4,8 @@ import 'dart:io' as Io;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class OCRService {
-  OCRService();
+class ComputerVisionAPI {
+  ComputerVisionAPI();
   static String apiKey = "be1cb7312ed24adfa0355688741729f1";
   static String endpoint =
       "https://foodexpiration.cognitiveservices.azure.com/vision/v3.1/ocr";
@@ -39,7 +39,7 @@ class OCRService {
   }
 
   static Future<DateTime> imageToDate() async {
-    var text = await OCRService.imageToText();
+    var text = await ComputerVisionAPI.imageToText();
 
     DateTime date = _dateParser(text);
 
