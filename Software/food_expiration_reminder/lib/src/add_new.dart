@@ -170,14 +170,15 @@ class _AddNewState extends State<AddNew> {
   
   
   void _parseText() async {
-    final _imageFile = await ImagePicker().getImage(source:ImageSource.gallery, maxWidth: 670,   maxHeight: 970);
+    final _imageFile = await ImagePicker().getImage(source:ImageSource.gallery);
 
     var bytes = Io.File(_imageFile.path.toString()).readAsBytesSync();
+
     //String img64 = base64Encode(bytes);
 
-    var url = 'https://foodexpiration.cognitiveservices.azure.com/vision/v3.1/read/analyze?language=en';
+    var url = 'https://foodexpiration.cognitiveservices.azure.com/vision/v3.1/ocr';
     var payload = bytes;
-    var header = {"Ocp-Apim-Subscription-Key" : api_key};
+    var header = {'Content-Type': 'image/png', "Ocp-Apim-Subscription-Key": apiKey};
     var post = await http.post(url=url,body: payload, headers: header);
 
     var result = jsonDecode(post.body);
