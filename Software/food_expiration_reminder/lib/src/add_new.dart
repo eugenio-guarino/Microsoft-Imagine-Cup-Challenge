@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food_expiration_reminder/src/data_storage.dart';
+import 'OCRServicce.dart';
 import 'food_data.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
 import 'notifications.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io' as Io;
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'apikey.dart';
 
 
 class AddNew extends StatefulWidget {
@@ -22,7 +18,6 @@ class AddNew extends StatefulWidget {
 
 class _AddNewState extends State<AddNew> {
   String _name = "";
-  String _parsedText = "";
   bool _showClearButton = false;
   bool _nameAdded = false;
   bool _dateAdded = false;
@@ -99,7 +94,7 @@ class _AddNewState extends State<AddNew> {
                   ),
                   IconButton(
                     icon: Icon(Icons.photo_camera),
-                    onPressed: () => _parseText(),
+                    onPressed: () => _useOCR(),
                   ),
                 ]),
                 TextButton(
@@ -167,34 +162,11 @@ class _AddNewState extends State<AddNew> {
   void _showDialog(String message) {
     Flushbar(message: message, duration: Duration(seconds: 1))..show(context);
   }
-  
-  
-  void _parseText() async {
-    final _imageFile = await ImagePicker().getImage(source:ImageSource.gallery);
 
-    var bytes = Io.File(_imageFile.path.toString()).readAsBytesSync();
+  void _useOCR() async{
 
-    //String img64 = base64Encode(bytes);
+    OCRService.imageToDate();
 
-    var url = 'https://foodexpiration.cognitiveservices.azure.com/vision/v3.1/ocr';
-    var payload = bytes;
-    var header = {'Content-Type': 'image/png', "Ocp-Apim-Subscription-Key": apiKey};
-    var post = await http.post(url=url,body: payload, headers: header);
-
-    var result = jsonDecode(post.body);
-    print(result);
-    setState(() {
-      _parsedText = result['ParsedResults'][0]['ParsedText'];
-    });
-    _textToDate();
-  }
-  
-  void _textToDate() {
-    var splitText = _parsedText.split("/");
-    String combinedDate = splitText[0].substring(splitText[0].length-2) + "/" + splitText[1].substring(splitText[1].length-2) + "/" + splitText[2].substring(0, 2);
-    print(splitText[0] + "  " + splitText[1] + "  " + splitText[2]);
-    print(combinedDate);
-    _date = DateFormat('dd/MM/yy').parse(combinedDate);
     _datePickerController
       ..text = DateFormat('dd/MM/yy').format(_date)
       ..selection = TextSelection.fromPosition(TextPosition(
@@ -202,6 +174,7 @@ class _AddNewState extends State<AddNew> {
           affinity: TextAffinity.upstream));
     print(_date);
   }
+
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {
