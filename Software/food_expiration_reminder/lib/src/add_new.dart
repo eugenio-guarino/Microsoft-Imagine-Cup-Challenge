@@ -152,7 +152,7 @@ class _AddNewState extends State<AddNew> {
     if (newDate != null && _date == DateTime.now()) {
       _date = newDate;
       _datePickerController
-        ..text = DateFormat.yMMMd().format(_date)
+        ..text = DateFormat('dd/MM/yy').format(_date)
         ..selection = TextSelection.fromPosition(TextPosition(
             offset: _datePickerController.text.length,
             affinity: TextAffinity.upstream));
@@ -165,14 +165,13 @@ class _AddNewState extends State<AddNew> {
 
   void _useOCR() async{
 
-    OCRService.imageToDate();
+    DateTime date = await OCRService.imageToDate();
 
     _datePickerController
-      ..text = DateFormat('dd/MM/yy').format(_date)
+      ..text = DateFormat('dd/MM/yy').format(date)
       ..selection = TextSelection.fromPosition(TextPosition(
           offset: _datePickerController.text.length,
           affinity: TextAffinity.upstream));
-    print(_date);
   }
 
 }
