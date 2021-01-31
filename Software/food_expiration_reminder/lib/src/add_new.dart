@@ -1,13 +1,11 @@
-// Copyright 2020, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:food_expiration_reminder/src/data_storage.dart';
+import 'ComputerVisionAPI.dart';
 import 'food_data.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
 import 'notifications.dart';
+
 
 class AddNew extends StatefulWidget {
   final DataStorage storage = DataStorage();
@@ -96,9 +94,7 @@ class _AddNewState extends State<AddNew> {
                   ),
                   IconButton(
                     icon: Icon(Icons.photo_camera),
-                    onPressed: () {
-                      // do something
-                    },
+                    onPressed: () => _useOCR(),
                   ),
                 ]),
                 TextButton(
@@ -116,7 +112,6 @@ class _AddNewState extends State<AddNew> {
                               .readData()
                               .then((List<FoodData> value) {
                             int newID = 0;
-
                             if (value != null && value.isNotEmpty) {
                               newID = value.fold<int>(
                                       0,
@@ -154,10 +149,10 @@ class _AddNewState extends State<AddNew> {
       helpText: 'Select a date',
     );
 
-    if (newDate != null) {
+    if (newDate != null && _date == DateTime.now()) {
       _date = newDate;
       _datePickerController
-        ..text = DateFormat.yMMMd().format(_date)
+        ..text = DateFormat('dd/MM/yy').format(_date)
         ..selection = TextSelection.fromPosition(TextPosition(
             offset: _datePickerController.text.length,
             affinity: TextAffinity.upstream));
@@ -167,6 +162,18 @@ class _AddNewState extends State<AddNew> {
   void _showDialog(String message) {
     Flushbar(message: message, duration: Duration(seconds: 1))..show(context);
   }
+
+  void _useOCR() async{
+
+    DateTime date = await ComputerVisionAPI.imageToDate();
+
+    _datePickerController
+      ..text = DateFormat('dd/MM/yy').format(date)
+      ..selection = TextSelection.fromPosition(TextPosition(
+          offset: _datePickerController.text.length,
+          affinity: TextAffinity.upstream));
+  }
+
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {
